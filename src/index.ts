@@ -55,3 +55,107 @@ calculateTax(10000, "decent job");
 //----------------------------
 
 // OBJECTS
+// even the properties of an object must have a type
+
+let employee: {
+    id: number,
+    name: string,
+    retire: (date: Date) => void
+} = {
+    id: 17,
+    name: "Marcy",
+    retire: (date: Date) => console.log(date)
+}
+
+//------------------------------
+// >> ADVANCED TYPES
+
+// 1. TYPE ALIASES
+// you can use "type" or "interface"
+
+type EmployeType = {
+  id: number,
+  name: string,
+  retire: (date: Date) => void
+}
+
+let typeAliasEmployee: EmployeType = {
+  id: 17,
+  name: "Marcy",
+  retire: (date: Date) => console.log(date)
+}
+
+// 2. Union Types
+// the vertical bar -> " | " is considered OR 
+
+// Narrowing technique is narrowing the union type into a specific type 
+
+function getWeight(kg: number | string): number {
+
+  // Narrowing technique
+  if (typeof kg === 'number') return kg * 1 // returning number
+
+  return parseInt(kg); // converting string into interger
+}
+
+// 3. Intersection Types
+// use & to intersect types
+
+type AdditionType = {
+  add: () => void
+};
+
+type SubtractType = {
+  subtract: () => void
+}
+
+type ComputeType = AdditionType & SubtractType;
+
+let numberToCompute: ComputeType = {
+  add: () => {
+    console.log("this is from AdditionType")
+  },
+  subtract: () => {
+    console.log("this is from SubtractType")
+  },
+}
+
+// 4. Literal Types
+// if you want to add an exact or specific value
+
+type Quantity = "Dozen" | 100
+
+let quantity: Quantity;
+quantity = "Dozen";
+quantity = 100; 
+// quantity = 90; // <- ERROR
+
+// 5. Nullable Types
+
+function greet(name: string | null | undefined): void {
+  if (name) return console.log("Nice name");
+  return console.log("Hola");
+}
+
+// 6. Optional Chaining
+// if the property or element is possible to be null or undefined
+
+type Customer = {
+  birthday?: Date
+}
+
+function getBirthday(id: number): Customer | null | undefined {
+  return id === 0 ? null : { birthday: new Date() }
+}
+
+let customer = getBirthday(0);
+
+// Optional property access operator
+console.log(customer?.birthday?.getFullYear);
+
+// Optional element access opertor <- used for arrays
+// customers?.[0]
+
+// Optional call <- used for referencing functions
+let log: any = null;
+log?.('a'); // <- this will only be excuted if "log" is referencing a function
